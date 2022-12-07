@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: #ffffff;
+}
+
+#root {
+  max-width: 1440px;
+  min-height: 101vh;
+  width: 100%;
+  margin: 0 auto;
+}

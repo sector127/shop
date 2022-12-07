@@ -1,0 +1,23 @@
+.header-nav {
+  width: 234px;
+  display: flex;
+  justify-content: space-evenly;
+  color: #1d1f22;
+}
+
+.header-nav-active {
+  color: #5ece7b !important;
+  border-bottom: 2px solid;
+  padding: 16px 0 30px 0;
+}
+
+.header-nav a {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 120%;
+  text-decoration: none;
+  color: #1d1f22;
+  padding: 16px 0 30px 0;
+}

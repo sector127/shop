@@ -1,0 +1,37 @@
+.currency {
+  display: flex;
+  position: relative;
+  justify-content: center;
+}
+
+.currency-options {
+  display: flex;
+  justify-content: center;
+  min-width: 115px;
+}
+
+.currency-options ul {
+  list-style-type: none;
+  padding: 0;
+  line-height: 0%;
+}
+
+.currency-options:hover {
+  background: #eeeeee;
+  transition: 0.6s;
+}
+
+.switcher {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 160%;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: space-around;
+  cursor: pointer;
+  min-width: 35px;
+  width: auto;
+}
