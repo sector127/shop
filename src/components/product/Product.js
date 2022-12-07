@@ -44,9 +44,6 @@ export const Product = () => {
                   >{`${attr.id}:`}</div>
                   <div key={uuid()}>
                     {attr.items.map((item) => {
-                      const currentAttr = {
-                        id: id,
-                      };
                       const attrId = attr.id;
                       const attrValue = item.value;
                       if (item.value.includes("#"))
@@ -57,20 +54,11 @@ export const Product = () => {
                             style={{
                               backgroundColor: item.value,
                             }}
-                            onClick={() => {
-                              cartAttr(currentAttr, attrId, attrValue);
-                            }}
                           ></button>
                         );
                       else {
                         return (
-                          <button
-                            key={uuid()}
-                            className={`btn-attr details`}
-                            onClick={() => {
-                              console.log(Object.entries(product));
-                            }}
-                          >
+                          <button key={uuid()} className={`btn-attr details`}>
                             {item.value}
                           </button>
                         );

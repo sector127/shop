@@ -1,7 +1,6 @@
 import React from "react";
 import uuid from "react-uuid";
 import { useIncart } from "../../providers/CartProvider";
-import { Cart } from "../../components/header/rightside/Cart";
 import { Slider } from "../../components/Slider/Slider";
 
 export const Bag = () => {

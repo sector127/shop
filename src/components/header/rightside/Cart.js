@@ -11,11 +11,6 @@ import { Link } from "react-router-dom";
 export const Cart = () => {
   const { addToCart, toCart, offCart, currentCurrency, cartAttr } = useIncart();
 
-  useEffect(() => {
-    console.log(addToCart);
-  }, [addToCart]);
-
-  console.log(Object.entries(addToCart.products));
   return (
     <>
       <Collapsible
