@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Center } from "./Center";
 import "./Header.css";
 import LeftSide from "./leftside/LeftSide";

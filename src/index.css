@@ -25,4 +25,25 @@ body {
   min-height: 101vh;
   width: 100%;
   margin: 0 auto;
+  padding: 0 30px;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #5ece7b;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #2fa455;
 }

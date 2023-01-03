@@ -7,7 +7,7 @@ import { useQuery } from "@apollo/client";
 import { NavLink } from "react-router-dom";
 
 export const LeftSide = () => {
-  const { error, loading, data } = useQuery(CATEGORY_NAMES);
+  const { data } = useQuery(CATEGORY_NAMES);
 
   const [categories, setCategories] = useState([]);
 

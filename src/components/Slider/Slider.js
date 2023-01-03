@@ -23,7 +23,7 @@ export const Slider = ({ slides }) => {
       <div onClick={goNext} className="go-right">
         <ArrowRight />
       </div>
-      <img src={slides[currentIndex]} />
+      <img src={slides[currentIndex]} alt="" />
     </div>
   );
 };

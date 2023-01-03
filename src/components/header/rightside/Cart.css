@@ -161,7 +161,7 @@
   text-transform: uppercase;
   line-height: 40px;
   color: #1d1f22;
-  margin-left: 100px;
+  margin-left: 20px;
 }
 
 .cart-container {
@@ -170,6 +170,7 @@
   flex-wrap: wrap;
   flex-direction: column;
   border-top: 1px solid #e5e5e5;
+  margin: 0 20px;
 }
 
 .cart-products {
@@ -274,7 +275,7 @@
 }
 
 .tax-total {
-  margin: 32px 0;
+  margin: 32px 20px;
 }
 
 .qty-slider {
@@ -283,7 +284,6 @@
 }
 
 .cart-product-slider {
-  max-width: 200px;
   width: auto;
 }
 

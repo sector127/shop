@@ -18,11 +18,11 @@ export const Bag = () => {
           return (
             <div className="cart-products" key={uuid()}>
               <div className="mini-cart-product-desc" key={uuid()}>
-                <div className="cart-product-desc-name" key={uuid()}>
-                  {desc.name}
-                </div>
                 <div className="cart-product-desc-brand" key={uuid()}>
                   {desc.brand}
+                </div>
+                <div className="cart-product-desc-name" key={uuid()}>
+                  {desc.name}
                 </div>
                 <div className="cart-product-price" key={uuid()}>
                   {currentCurrency}
@@ -33,7 +33,7 @@ export const Bag = () => {
                   }
                 </div>
                 <div className="mini-cart-product-attr">
-                  {desc.attr.map((attr) => {
+                  {desc.attributes.map((attr) => {
                     return (
                       <div key={uuid()}>
                         <div
@@ -133,7 +133,7 @@ export const Bag = () => {
                   </div>
                 </div>
                 <div className="cart-product-slider" key={uuid()}>
-                  <Slider slides={desc.image} />
+                  <Slider slides={desc.gallery} />
                 </div>
               </div>
             </div>

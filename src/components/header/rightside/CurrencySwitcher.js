@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 
 import uuid from "react-uuid";
 
@@ -9,7 +9,7 @@ import { Collapsible } from "../../collapsible";
 import { ArrowDown, ArrowUp } from "../../../atoms/Arrow";
 
 export const CurrencySwitcher = () => {
-  const { error, loading, data } = useCurrency();
+  const { data } = useCurrency();
   const { currentCurrency, setCurrentCurrency } = useIncart();
 
   if (data)

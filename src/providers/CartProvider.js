@@ -1,6 +1,6 @@
-import { isObjectType } from "graphql";
 import React, { useState } from "react";
 import { createContext, useContext } from "react";
+import uuid from "react-uuid";
 import { useLocalStorage } from "../hooks";
 
 export const CartContext = createContext({
@@ -19,6 +19,13 @@ export const CartProvider = ({ children }) => {
 
   const toCart = (products) => {
     setAddToCart((prev) => {
+      let defaultSelected = [];
+      products.attributes.forEach((attr) => {
+        let allAttr = {};
+        allAttr.name = attr.name;
+        allAttr.value = attr.items[0].value;
+        defaultSelected.push(allAttr);
+      });
       if (prev.products[products.id]) {
         const inCart = { ...prev.products };
         inCart[products.id].qty = inCart[products.id].qty + 1;
@@ -33,21 +40,25 @@ export const CartProvider = ({ children }) => {
             products.prices.find((c) => c.currency.symbol === currentCurrency)
               .amount,
         };
-      } else
+      } else {
         return {
           ...prev,
           cartTotal: prev.cartTotal + 1,
           products: {
             ...prev.products,
-            [products.id]: {
+            [products.id + uuid()]: {
+              id: products.id,
               wish: true,
               qty: 1,
-              attr: products.attributes,
-              image: products.gallery,
+              attributes: products.attributes,
+              gallery: products.gallery,
               name: products.name,
               brand: products.brand,
               prices: products.prices,
-              selectedAttr: [],
+              selectedAttr:
+                products.selectedAttr?.length > 0
+                  ? products.selectedAttr
+                  : defaultSelected,
             },
           },
           total:
@@ -55,6 +66,7 @@ export const CartProvider = ({ children }) => {
             products.prices.find((c) => c.currency.symbol === currentCurrency)
               .amount,
         };
+      }
     });
   };
 
@@ -87,31 +99,50 @@ export const CartProvider = ({ children }) => {
   const cartAttr = (products, attr, value) => {
     setAddToCart((prev) => {
       const inCart = { ...prev.products };
-      const selected = inCart[products.id].selectedAttr?.find(
-        (obj) => obj.name === attr
-      );
-      const indexOfObject = inCart[products.id].selectedAttr?.findIndex(
-        (object) => {
-          return object.name === selected.name;
-        }
-      );
-      if (selected) {
-        inCart[products.id].selectedAttr.splice(indexOfObject, 1);
-      }
-
-      return {
-        ...prev,
-        products: {
-          ...prev.products,
-          [products.id]: {
-            ...products,
-            selectedAttr: [
-              ...products.selectedAttr,
-              { name: attr, value: value },
-            ],
-          },
-        },
+      let selected = {
+        name: attr,
+        value: value,
       };
+      const arr = inCart[products.id].selectedAttr;
+      const indexOfObject = inCart[products.id]?.selectedAttr.findIndex(
+        (object) => object.name === selected.name
+      );
+      if (arr.some((s) => s.name === attr && s.value === value)) {
+        arr.splice(indexOfObject, 1);
+        return {
+          ...prev,
+          products: {
+            ...prev.products,
+            [products.id]: {
+              ...products,
+              selectedAttr: arr,
+            },
+          },
+        };
+      } else if (arr.some((s) => s.name === attr)) {
+        arr.splice(indexOfObject, 1);
+        arr.push(selected);
+        return {
+          ...prev,
+          products: {
+            ...prev.products,
+            [products.id]: {
+              ...products,
+              selectedAttr: arr,
+            },
+          },
+        };
+      } else
+        return {
+          ...prev,
+          products: {
+            ...prev.products,
+            [products.id]: {
+              ...products,
+              selectedAttr: [...products.selectedAttr, selected],
+            },
+          },
+        };
     });
   };
 

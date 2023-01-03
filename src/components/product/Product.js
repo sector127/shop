@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import uuid from "react-uuid";
 import { useParams } from "react-router";
 import { useIncart } from "../../providers/CartProvider";
@@ -8,34 +8,92 @@ import { useProduct } from "../../hooks";
 
 export const Product = () => {
   const { id } = useParams();
-  const { error, loading, data } = useProduct(id);
-  const { addToCart, toCart, offCart, currentCurrency, cartAttr } = useIncart();
+  const { data } = useProduct(id);
+  const { toCart, currentCurrency } = useIncart();
   const [product, setProduct] = useState();
+  const [, updateState] = useState();
   const [image, setImage] = useState();
+  const [showMore, setShowMore] = useState(false);
+
+  const forceUpdate = useCallback(() => updateState({}), []);
+
+  let item;
   useEffect(() => {
-    if (data) setProduct(data.product);
-  }, [data]);
+    if (data) {
+      setProduct(item);
+    }
+  }, [data, item]);
+
+  if (data) {
+    item = {
+      [data.product.id]: {
+        wish: true,
+        qty: 1,
+        attributes: data.product.attributes,
+        gallery: data.product.gallery,
+        name: data.product.name,
+        brand: data.product.brand,
+        prices: data.product.prices,
+        description: data.product.description,
+        selectedAttr: [],
+        id: data.product.id,
+      },
+    };
+  }
 
   const handleClick = (e) => {
     setImage(e.currentTarget.src);
+  };
+
+  const handleSelect = (attr, value) => {
+    let selected = {
+      name: attr,
+      value: value,
+    };
+    const arr = product[data.product.id].selectedAttr;
+    const indexOfObject = arr.findIndex(
+      (object) => object.name === selected.name
+    );
+    if (arr.some((s) => s.name === attr && s.value === value)) {
+      arr.splice(indexOfObject, 1);
+    } else if (arr.some((s) => s.name === attr)) {
+      arr.splice(indexOfObject, 1);
+      arr.push(selected);
+    } else {
+      arr.push(selected);
+    }
   };
 
   if (product)
     return (
       <div className="product-container">
         <div className="product-img-items" key={uuid()}>
-          {product.gallery.map((val) => {
-            return <img src={val} key={uuid()} onClick={handleClick} />;
+          {product[data.product.id].gallery.map((val) => {
+            return (
+              <img
+                src={val}
+                key={uuid()}
+                onClick={handleClick}
+                alt={product[data.product.id].name}
+              />
+            );
           })}
         </div>
         <div className="product-details-img">
-          {<img src={image ? image : product.gallery[0]} />}
+          {
+            <img
+              src={image ? image : product[data.product.id].gallery[0]}
+              alt={product[data.product.id].name}
+            />
+          }
         </div>
         <div className="product-about">
-          <div className="product-about-title">{product.name}</div>
-          <div className="product-brand">{product.brand}</div>
+          <div className="product-brand">{product[data.product.id].brand}</div>
+          <div className="product-about-title">
+            {product[data.product.id].name}
+          </div>
           <div className="product-attr">
-            {product.attributes.map((attr) => {
+            {product[data.product.id].attributes.map((attr) => {
               return (
                 <div key={uuid()}>
                   <div
@@ -46,6 +104,34 @@ export const Product = () => {
                     {attr.items.map((item) => {
                       const attrId = attr.id;
                       const attrValue = item.value;
+                      let attrInCart = product[
+                        data.product.id
+                      ].selectedAttr.map((s) => s);
+                      for (const a of attrInCart)
+                        if (
+                          item?.value === a?.value &&
+                          attr?.name === a?.name
+                        ) {
+                          return (
+                            <button
+                              key={uuid()}
+                              onClick={() => {
+                                handleSelect(attrId, attrValue);
+                                forceUpdate();
+                              }}
+                              className={`${
+                                item.value.includes("#")
+                                  ? "color-btn details selected"
+                                  : "btn-attr details selected-string"
+                              }`}
+                              style={{
+                                backgroundColor: item.value,
+                              }}
+                            >
+                              {!item.value.includes("#") ? item.value : null}
+                            </button>
+                          );
+                        }
                       if (item.value.includes("#"))
                         return (
                           <button
@@ -54,11 +140,22 @@ export const Product = () => {
                             style={{
                               backgroundColor: item.value,
                             }}
+                            onClick={() => {
+                              handleSelect(attrId, attrValue);
+                              forceUpdate();
+                            }}
                           ></button>
                         );
                       else {
                         return (
-                          <button key={uuid()} className={`btn-attr details`}>
+                          <button
+                            key={uuid()}
+                            className={`btn-attr details`}
+                            onClick={() => {
+                              handleSelect(attrId, attrValue);
+                              forceUpdate();
+                            }}
+                          >
                             {item.value}
                           </button>
                         );
@@ -74,22 +171,33 @@ export const Product = () => {
             <div className="product-about-price">
               {currentCurrency}
               {
-                product.prices.find(
+                product[data.product.id].prices.find(
                   (c) => c.currency.symbol === currentCurrency
                 ).amount
               }
             </div>
           </div>
           <button
+            disabled={!data.product.inStock}
             className="product-to-cart"
             onClick={() => {
-              toCart(product);
+              toCart(product[data.product.id]);
             }}
           >
-            ADD TO CART
+            {data.product.inStock ? "ADD TO CART" : "OUT OF STOCK"}
           </button>
           <div className="product-description">
-            {product.description.replace(/<\/?[^>]+(>|$)/g, "")}
+            {showMore
+              ? product[data.product.id].description.replace(
+                  /<\/?[^>]+(>|$)/g,
+                  ""
+                )
+              : product[data.product.id].description
+                  .replace(/<\/?[^>]+(>|$)/g, "")
+                  .substring(0, 250)}
+            <button onClick={() => setShowMore(!showMore)}>
+              {showMore ? "Show less" : "Show more"}
+            </button>
           </div>
         </div>
       </div>

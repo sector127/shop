@@ -4,7 +4,7 @@ import { CATEGORY_NAMES } from "../api/queries";
 import { useQuery } from "@apollo/client";
 
 export const useCategory = () => {
-  const { error, loading, data } = useQuery(CATEGORY_NAMES);
+  const { data } = useQuery(CATEGORY_NAMES);
 
   const [categories, setCategories] = useState([]);
 

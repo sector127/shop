@@ -1,6 +1,6 @@
 .collapsible-content {
   opacity: 0;
-  transition: opacity 500ms ease-in;
+  transition: opacity 0.3s ease-in;
   position: absolute;
   top: 60px;
   cursor: pointer;
