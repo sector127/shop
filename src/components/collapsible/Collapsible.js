@@ -24,18 +24,21 @@ export const Collapsible = ({
   });
 
   return (
-    <div className={`${className}`}>
-      <div className="switcher" onClick={() => setOpened(!opened)}>
-        {title}
-        {opened ? openedIcon : closedIcon}
+    <>
+      <div className={`${opened ? "backdrop" : undefined}`}></div>
+      <div className={`${className}`}>
+        <div className="switcher" onClick={() => setOpened(!opened)}>
+          {title}
+          {opened ? openedIcon : closedIcon}
+        </div>
+        <div
+          className={`collapsible-content ${opened ? "opened" : ""}`}
+          ref={myRef}
+        >
+          {opened ? children : null}
+        </div>
+        {clickedOutside}
       </div>
-      <div
-        className={`collapsible-content ${opened ? "opened" : ""}`}
-        ref={myRef}
-      >
-        {opened ? children : null}
-      </div>
-      {clickedOutside}
-    </div>
+    </>
   );
 };
