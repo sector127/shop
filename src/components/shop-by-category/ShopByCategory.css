@@ -1,3 +1,9 @@
+.shop-by-category {
+  padding: 0 30px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
 .all-cart-products {
   max-height: calc(100vh - 340px);
   height: auto;

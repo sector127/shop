@@ -1,178 +1,58 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import uuid from "react-uuid";
+import { useSelector } from "react-redux";
+import { CartAttributes } from "../../attributes/CartAttributes";
 
 import "./Cart.css";
+import { CartItem } from "./CartItem";
 
-import { useIncart } from "../../../providers/CartProvider";
-import { CartIcon } from "../../../atoms/CartIcon";
-import { Collapsible } from "../../collapsible";
-import { Link } from "react-router-dom";
-
-export const Cart = () => {
-  const { addToCart, toCart, offCart, currentCurrency, cartAttr } = useIncart();
+export const Cart = (props) => {
+  const cartItems = useSelector((state) => state.cart.items);
+  const { currency } = useSelector((state) => state.cart.currency);
+  const totalPrice = useSelector((state) => state.cart.cartTotalPrice);
   return (
-    <>
-      <Collapsible
-        openedIcon={<CartIcon className="cart-icon" />}
-        closedIcon={<CartIcon className="cart-icon" />}
-        className="mini-cart"
-      >
-        <div className="mini-cart-title" key={uuid()}>
-          <span>My Bag.</span> {addToCart.cartTotal} items
-        </div>
-        <div className="all-cart-products" key={uuid()}>
-          {Object.entries(addToCart.products).map(([products, desc]) => {
-            const currentItem = {
-              ...desc,
-              id: products,
-            };
-
+    <div className="mini-cart-container" key={uuid()}>
+      <div className="mini-cart" key={uuid()}>
+        {cartItems.length < 1 && <span>Your cart is empty</span>}
+        <ul key={uuid()}>
+          {cartItems.map((item) => {
+            console.log(item);
+            const price = item.prices.find(
+              (c) => c.currency.symbol === currency
+            ).amount;
+            const allAttibutes = item.attributes.map((attribute) => attribute);
             return (
               <div key={uuid()}>
-                <div className="mini-cart-products" key={uuid()}>
-                  <div className="mini-cart-product-desc" key={uuid()}>
-                    <div className="mini-cart-product-desc-brand" key={uuid()}>
-                      {desc.brand}
-                    </div>
-                    <div className="mini-cart-product-desc-name" key={uuid()}>
-                      {desc?.name}
-                    </div>
-                    <div className="mini-cart-product-price" key={uuid()}>
-                      {currentCurrency}
-                      {
-                        desc.prices.find(
-                          (c) => c.currency.symbol === currentCurrency
-                        ).amount
-                      }
-                    </div>
-                    <div className="mini-cart-product-attr" key={uuid()}>
-                      {desc.attributes?.map((attr) => {
-                        return (
-                          <div key={uuid()}>
-                            <div
-                              className="mini-cart-product-attr-title"
-                              key={uuid()}
-                            >{`${attr?.name}:`}</div>
-                            <div key={uuid()}>
-                              {attr.items?.map((item) => {
-                                const currentAttr = {
-                                  ...desc,
-                                  id: products,
-                                };
-                                const attrId = attr.name;
-                                const attrValue = item.value;
-                                let attrInCart = desc.selectedAttr.map(
-                                  (s) => s
-                                );
-                                for (const a of attrInCart)
-                                  if (
-                                    item?.value === a?.value &&
-                                    attr?.name === a?.name
-                                  ) {
-                                    return (
-                                      <button
-                                        key={uuid()}
-                                        onClick={(e) => {
-                                          e.preventDefault();
-                                          cartAttr(
-                                            currentAttr,
-                                            attrId,
-                                            attrValue
-                                          );
-                                        }}
-                                        className={`${
-                                          item.value.includes("#")
-                                            ? "mini-cart-color-btn color-btn selected"
-                                            : "mini-cart-btn btn-attr selected-string"
-                                        }`}
-                                        style={{
-                                          backgroundColor: item.value,
-                                        }}
-                                      >
-                                        {!item.value.includes("#")
-                                          ? item.value
-                                          : null}
-                                      </button>
-                                    );
-                                  }
-                                if (item.value.includes("#")) {
-                                  return (
-                                    <button
-                                      key={uuid()}
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        cartAttr(
-                                          currentAttr,
-                                          attrId,
-                                          attrValue
-                                        );
-                                      }}
-                                      className={`mini-cart-color-btn color-btn`}
-                                      style={{
-                                        backgroundColor: item.value,
-                                      }}
-                                    ></button>
-                                  );
-                                } else {
-                                  return (
-                                    <button
-                                      key={uuid()}
-                                      className={`mini-cart-btn btn-attr `}
-                                      onClick={(e) => {
-                                        cartAttr(
-                                          currentAttr,
-                                          attrId,
-                                          attrValue
-                                        );
-                                      }}
-                                    >
-                                      {item.value}
-                                    </button>
-                                  );
-                                }
-                              })}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                  <div className="mini-cart-qty">
-                    <div className="mini-cart-qty-increment">
-                      <button
-                        className="mini-cart-btn btn-attr"
-                        onClick={() => {
-                          toCart(currentItem);
-                        }}
-                      >
-                        +
-                      </button>
-                    </div>
-                    <div className="mini-cart-qty-display">{desc.qty}</div>
-                    <div className="mini-cart-qty-decrement">
-                      <button
-                        className="mini-cart-btn btn-attr"
-                        onClick={() => {
-                          offCart(currentItem);
-                        }}
-                      >
-                        -
-                      </button>
-                    </div>
-                  </div>
-                  <div className="mini-cart-product-image" key={uuid()}>
-                    <img src={desc.gallery[0]} alt={desc?.name} />
-                  </div>
-                </div>
+                <CartItem
+                  key={item.id}
+                  item={{
+                    id: item.id,
+                    brand: item.brand,
+                    name: item.name,
+                    quantity: item.quantity,
+                    price: price,
+                    priceSymbol: currency,
+                    gallery: item.gallery[0],
+                    prices: item.prices,
+                    totalPrice: item.totalPrice,
+                  }}
+                />
+                <CartAttributes
+                  key={uuid()}
+                  attributes={allAttibutes}
+                  id={item.id}
+                  cartCl="mini-"
+                />
               </div>
             );
           })}
-        </div>
+        </ul>
         <div className="total">
           <span className="total-title">Total</span>
           <span className="total-price">
-            {currentCurrency}
-            {Math.round(addToCart.total)}
+            {currency}
+            {Math.round(totalPrice)}
           </span>
         </div>
         <div className="checkout">
@@ -181,10 +61,7 @@ export const Cart = () => {
           </Link>
           <button className="checkout-btn">CHECKOUT</button>
         </div>
-      </Collapsible>
-      <div className={`${addToCart.cartTotal ? "total-items" : undefined}`}>
-        {addToCart.cartTotal ? addToCart.cartTotal : null}
       </div>
-    </>
+    </div>
   );
 };

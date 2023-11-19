@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
-import { CartContext } from "../../providers/CartProvider";
+import React, { useState, useEffect } from "react";
 import uuid from "react-uuid";
 import { useProductsByCategory } from "../../hooks/";
 import "./ShopByCategory.css";
 import { Link, useParams } from "react-router-dom";
+import { CategoryItem } from "./CategoryItem";
+import { useSelector } from "react-redux";
 
 export const ShopByCategory = () => {
   const { input } = useParams();
@@ -11,14 +12,13 @@ export const ShopByCategory = () => {
     title: input,
   });
   const [products, setProducts] = useState([]);
+  const currentCurrency = useSelector((state) => state.cart.currency.currency);
 
   useEffect(() => {
     if (data) {
       setProducts(data.category.products);
     }
   }, [data]);
-
-  const { toCart, currentCurrency } = useContext(CartContext);
 
   return (
     <div className="shop-by-category">
@@ -27,6 +27,9 @@ export const ShopByCategory = () => {
       </h1>
       <div className="products-container">
         {products.map((val) => {
+          const price = val.prices.find(
+            (c) => c.currency.symbol === currentCurrency
+          ).amount;
           return (
             <div className="product" key={uuid()}>
               <Link
@@ -35,26 +38,16 @@ export const ShopByCategory = () => {
                 className={val.inStock ? "product-card" : "product-disabled"}
                 key={uuid()}
               >
-                <div className="product-img">
-                  <img src={val.gallery[0]} alt={val.name} />
-                </div>
-                <div className="product-title">{val.name}</div>
-                <div className="product-price">
-                  <span>{currentCurrency}</span>
-                  {
-                    val.prices.find(
-                      (c) => c.currency.symbol === currentCurrency
-                    ).amount
-                  }
-                </div>
-                <button
-                  kay={uuid()}
-                  className={"to-cart-btn"}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toCart(val);
-                  }}
-                ></button>
+                <CategoryItem
+                  id={val.id}
+                  name={val.name}
+                  brand={val.brand}
+                  priceSymbol={currentCurrency}
+                  price={price}
+                  gallery={val.gallery}
+                  attributes={val.attributes}
+                  prices={val.prices}
+                />
               </Link>
             </div>
           );

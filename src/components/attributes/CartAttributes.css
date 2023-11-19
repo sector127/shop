@@ -1,0 +1,28 @@
+.cart-attributes-name {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 160%;
+  color: #1d1f22;
+  margin: 16px 0 8px 0;
+}
+
+.attr-btn {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 160%;
+  color: #1d1f22;
+  background: #fff;
+  cursor: pointer;
+  border: 1px solid #1d1f22;
+  margin: 0 5px 0 0;
+}
+
+.cart-color-btn {
+  width: 16px;
+  height: 16px;
+  border: none;
+}

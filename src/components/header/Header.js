@@ -7,9 +7,11 @@ import { RightSide } from "./rightside";
 export const Header = () => {
   return (
     <div className="header">
-      <LeftSide />
-      <Center />
-      <RightSide />
+      <div className="top">
+        <LeftSide />
+        <Center />
+        <RightSide />
+      </div>
     </div>
   );
 };

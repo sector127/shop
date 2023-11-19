@@ -1,7 +1,7 @@
 .header-nav {
   width: 234px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   color: #1d1f22;
 }
 

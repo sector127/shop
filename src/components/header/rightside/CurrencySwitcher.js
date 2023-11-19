@@ -4,22 +4,24 @@ import uuid from "react-uuid";
 
 import "./CurrencySwitcher.css";
 import { useCurrency } from "../../../hooks/useCurrency";
-import { useIncart } from "../../../providers/CartProvider";
-import { Collapsible } from "../../collapsible";
-import { ArrowDown, ArrowUp } from "../../../atoms/Arrow";
+import { useDispatch } from "react-redux";
+import { cartActions } from "../../../store/cart-slice";
+import { uiActions } from "../../../store/ui-slice";
 
 export const CurrencySwitcher = () => {
   const { data } = useCurrency();
-  const { currentCurrency, setCurrentCurrency } = useIncart();
+  const dispatch = useDispatch();
+  const currencyHandler = (currency) => {
+    dispatch(cartActions.selectCurrency({ currency }));
+  };
+
+  const closeBackdropHandler = () => {
+    dispatch(uiActions.toggleCurrency());
+  };
 
   if (data)
     return (
-      <Collapsible
-        title={currentCurrency}
-        openedIcon={<ArrowUp />}
-        closedIcon={<ArrowDown />}
-        className="currency"
-      >
+      <div className="currency">
         {data.currencies.map((val) => {
           return (
             <div className="currency-options" key={uuid()}>
@@ -27,7 +29,8 @@ export const CurrencySwitcher = () => {
                 <li
                   key={uuid()}
                   onClick={() => {
-                    setCurrentCurrency(val.symbol);
+                    currencyHandler(val.symbol);
+                    closeBackdropHandler();
                   }}
                 >
                   {`${val.symbol}  ${val.label}`}
@@ -36,6 +39,6 @@ export const CurrencySwitcher = () => {
             </div>
           );
         })}
-      </Collapsible>
+      </div>
     );
 };
