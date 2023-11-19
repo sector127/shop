@@ -6,11 +6,7 @@ import { cartActions } from "../../store/cart-slice";
 import "./CartAttributes.css";
 
 export const CartAttributes = (props) => {
-  const { attributes } = props;
-  const { id } = props;
-  const allSelectedAttributes = useSelector((state) =>
-    state.cart.items.map((item) => item.selectedAttributes)
-  );
+  const { attributes, id, selectedAttributes } = props;
 
   const dispatch = useDispatch();
 
@@ -20,7 +16,7 @@ export const CartAttributes = (props) => {
 
   return (
     <div className="cart-attrs" key={uuid()}>
-      {attributes.map((attr) => {
+      {attributes?.map((attr) => {
         return (
           <div key={uuid()}>
             <div className="cart-attributes-name" key={uuid()}>
@@ -29,7 +25,7 @@ export const CartAttributes = (props) => {
             <div className="cart-attributes-value" key={uuid()}>
               {attr.items.map((item) => {
                 let isSelected = false;
-                for (const a of allSelectedAttributes) {
+                for (const a of [selectedAttributes]) {
                   a.map((i) => {
                     if (i.value === item.value && i.name === attr.name)
                       isSelected = true;

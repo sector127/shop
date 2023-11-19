@@ -115,4 +115,23 @@
   font-size: 16px;
   line-height: 159.96%;
   color: #1d1f22;
+  position: relative;
+}
+
+.show-more-button {
+  background-color: #ccc;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.show-more-button:hover {
+  background-color: #aaa;
 }

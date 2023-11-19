@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import uuid from "react-uuid";
 import { useSelector } from "react-redux";
 import { CartAttributes } from "../../components/attributes/CartAttributes";
@@ -22,9 +21,10 @@ export const Bag = (props) => {
               const price = item.prices.find(
                 (c) => c.currency.symbol === currency
               ).amount;
-              const allAttibutes = item.attributes.map(
+              const allAttibutes = item.attributes?.map(
                 (attribute) => attribute
               );
+              console.log(allAttibutes);
               return (
                 <div key={uuid()} className="bag-item">
                   <BagItem
@@ -39,6 +39,7 @@ export const Bag = (props) => {
                       gallery: item.gallery,
                       prices: item.prices,
                       totalPrice: item.totalPrice,
+                      selectedAttributes: item.selectedAttributes,
                     }}
                   />
                   <CartAttributes
@@ -46,6 +47,7 @@ export const Bag = (props) => {
                     attributes={allAttibutes}
                     id={item.id}
                     cartCl={""}
+                    selectedAttributes={item.selectedAttributes}
                   />
                 </div>
               );

@@ -2,9 +2,9 @@ import { ApolloProvider } from "@apollo/client";
 import { Provider } from "react-redux";
 import { client } from "./api/api.service";
 import { Header } from "./components/header/Header";
-import { CartProvider } from "./providers/CartProvider";
 import { RoutesComp } from "./RoutesComp";
 import store from "./store";
+import { BackToTopButton } from "./atoms/BackToTop/BackToTopButton";
 
 function App() {
   return (
@@ -12,6 +12,7 @@ function App() {
       <Provider store={store}>
         <Header />
         <RoutesComp />
+        <BackToTopButton />
       </Provider>
     </ApolloProvider>
   );

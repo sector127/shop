@@ -16,6 +16,7 @@ export const BagItem = (props) => {
     quantity,
     prices,
     totalPrice,
+    selectedAttributes,
   } = props.item;
   const dispatch = useDispatch();
 
@@ -33,12 +34,13 @@ export const BagItem = (props) => {
         priceSymbol,
         prices,
         totalPrice,
+        selectedAttributes,
       })
     );
   };
 
   const removeItemHandler = () => {
-    dispatch(cartActions.removeItemCart(id));
+    dispatch(cartActions.removeItemCart({ id, selectedAttributes }));
   };
 
   return (

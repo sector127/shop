@@ -25,7 +25,7 @@ export const ShopByCategory = () => {
       <h1 className="category-title">
         {input[0].toUpperCase() + input.slice(1)}
       </h1>
-      <div className="products-container">
+      <div className="products-grid">
         {products.map((val) => {
           const price = val.prices.find(
             (c) => c.currency.symbol === currentCurrency

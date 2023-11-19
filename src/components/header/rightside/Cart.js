@@ -2,10 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import uuid from "react-uuid";
 import { useSelector } from "react-redux";
-import { CartAttributes } from "../../attributes/CartAttributes";
-
 import "./Cart.css";
 import { CartItem } from "./CartItem";
+import { CartAttributes } from "../../attributes/CartAttributes";
 
 export const Cart = (props) => {
   const cartItems = useSelector((state) => state.cart.items);
@@ -17,7 +16,6 @@ export const Cart = (props) => {
         {cartItems.length < 1 && <span>Your cart is empty</span>}
         <ul key={uuid()}>
           {cartItems.map((item) => {
-            console.log(item);
             const price = item.prices.find(
               (c) => c.currency.symbol === currency
             ).amount;
@@ -36,13 +34,16 @@ export const Cart = (props) => {
                     gallery: item.gallery[0],
                     prices: item.prices,
                     totalPrice: item.totalPrice,
+                    attributes: item.attributes,
+                    selectedAttributes: item.selectedAttributes,
                   }}
                 />
                 <CartAttributes
                   key={uuid()}
                   attributes={allAttibutes}
                   id={item.id}
-                  cartCl="mini-"
+                  cartCl={"mini"}
+                  selectedAttributes={item.selectedAttributes}
                 />
               </div>
             );
